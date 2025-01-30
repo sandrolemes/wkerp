@@ -1,0 +1,100 @@
+CREATE DATABASE 'wkerp';
+
+----------------------------------------------------------------
+
+CREATE TABLE `clientes` (
+  `codcli` bigint NOT NULL,
+  `nome` varchar(100) NOT NULL,
+  `cidade` varchar(100) DEFAULT NULL,
+  `uf` varchar(2) DEFAULT NULL,
+  PRIMARY KEY (`codcli`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+----------------------------------------------------------------
+
+CREATE TABLE `produtos` (
+  `codprod` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL,
+  `descricao` varchar(100) NOT NULL,
+  `precovenda` double(12,2) DEFAULT NULL,
+  PRIMARY KEY (`codprod`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
+
+----------------------------------------------------------------
+
+CREATE TABLE `pedidoscab` (
+  `numped` bigint NOT NULL AUTO_INCREMENT,
+  `dataemissao` datetime NOT NULL,
+  `codcli` bigint NOT NULL,
+  `valortotal` double(12,2) DEFAULT NULL,
+  PRIMARY KEY (`numped`),
+  KEY `pedidocab_clientes_FK` (`codcli`),
+  CONSTRAINT `pedidocab_clientes_FK` FOREIGN KEY (`codcli`) REFERENCES `clientes` (`codcli`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3;
+
+----------------------------------------------------------------
+
+CREATE TABLE `pedidositens` (
+  `numped` bigint NOT NULL,
+  `numpeditem` bigint NOT NULL AUTO_INCREMENT,
+  `codprod` varchar(100) NOT NULL,
+  `quantidade` double(12,6) DEFAULT NULL,
+  `valorunit` double(12,2) DEFAULT NULL,
+  `valortotal` double(12,2) DEFAULT NULL,
+  PRIMARY KEY (`numpeditem`),
+  KEY `pedidositens_produtos_FK` (`codprod`),
+  KEY `pedidositens_pedidoscab_FK` (`numped`),
+  CONSTRAINT `pedidositens_pedidoscab_FK` FOREIGN KEY (`numped`) REFERENCES `pedidoscab` (`numped`),
+  CONSTRAINT `pedidositens_produtos_FK` FOREIGN KEY (`codprod`) REFERENCES `produtos` (`codprod`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3;
+
+----------------------------------------------------------------
+
+INSERT INTO clientes (codigo, nome, cidade, uf) 
+VALUES
+(1, 'Ana Silva', 'São Paulo', 'SP'),
+(2, 'Carlos Ferreira', 'Rio de Janeiro', 'RJ'),
+(3, 'Mariana Oliveira', 'Belo Horizonte', 'MG'),
+(4, 'Rafael Costa', 'Curitiba', 'PR'),
+(5, 'Bianca Santos', 'Porto Alegre', 'RS'),
+(6, 'João Pereira', 'Salvador', 'BA'),
+(7, 'Gabriela Mendes', 'Florianópolis', 'SC'),
+(8, 'Fernando Lima', 'Manaus', 'AM'),
+(9, 'Isabela Souza', 'Recife', 'PE'),
+(10, 'Gustavo Martins', 'Goiânia', 'GO'),
+(11, 'Pedro Alves', 'Fortaleza', 'CE'),
+(12, 'Juliana Gomes', 'Natal', 'RN'),
+(13, 'Felipe Ribeiro', 'Vitória', 'ES'),
+(14, 'Camila Nunes', 'Brasília', 'DF'),
+(15, 'Thiago Rocha', 'Belém', 'PA'),
+(16, 'Larissa Barros', 'Campo Grande', 'MS'),
+(17, 'Diego Fernandes', 'Aracaju', 'SE'),
+(18, 'Vanessa Almeida', 'João Pessoa', 'PB'),
+(19, 'Lucas Teixeira', 'Maceió', 'AL'),
+(20, 'Patrícia Carvalho', 'Cuiabá', 'MT');
+
+----------------------------------------------------------------
+
+INSERT INTO produtos (codigo, descricao, precovenda) 
+VALUES
+(101, 'Smartphone Samsung Galaxy S21', 3499.90),
+(102, 'Notebook Dell Inspiron 15', 4599.99),
+(103, 'Smart TV LG 50" 4K', 2799.90),
+(104, 'Fone de Ouvido JBL Bluetooth', 399.90),
+(105, 'Geladeira Brastemp Frost Free 400L', 3999.99),
+(106, 'Máquina de Lavar Samsung 11Kg', 2999.90),
+(107, 'Micro-ondas Electrolux 20L', 499.99),
+(108, 'Notebook Acer Aspire 5', 3899.99),
+(109, 'Cafeteira Nespresso Essenza Mini', 499.90),
+(110, 'Smartphone Apple iPhone 14', 6999.00),
+(111, 'Mouse Gamer Logitech G502', 349.99),
+(112, 'Teclado Mecânico Redragon Kumara', 299.90),
+(113, 'Caixa de Som JBL Flip 5', 699.90),
+(114, 'Ar Condicionado Split LG Dual Inverter', 2999.99),
+(115, 'Monitor Samsung 24" Full HD', 1099.90),
+(116, 'Headset Gamer HyperX Cloud II', 599.99),
+(117, 'Câmera GoPro Hero 11 Black', 2899.90),
+(118, 'Smartwatch Xiaomi Mi Watch', 1199.90),
+(119, 'Ventilador de Mesa Arno Turbo', 299.90),
+(120, 'Kindle Paperwhite 8GB', 649.90);
+
+----------------------------------------------------------------
